@@ -21,13 +21,15 @@ from setuptools import setup, find_packages, Command
 PACKAGE_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 
-#VERBOSE = True
+# VERBOSE = True
 VERBOSE = False
+
 
 def _error(msg):
     if VERBOSE:
         warnings.warn(msg)
     return ""
+
 
 def get_version_from_git():
     try:
@@ -107,12 +109,10 @@ setup(
     url='https://github.com/jedie/python-ping/',
     keywords="ping icmp network latency",
     packages=find_packages(),
-    include_package_data=True, # include package data under svn source control
+    include_package_data=True,  # include package data under svn source control
     zip_safe=False,
     scripts=["ping.py"],
     classifiers=[
-        # http://pypi.python.org/pypi?%3Aaction=list_classifiers
-#        "Development Status :: 4 - Beta",
         "Development Status :: 5 - Production/Stable",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",

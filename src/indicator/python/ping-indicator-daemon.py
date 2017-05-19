@@ -2,7 +2,6 @@
 
 
 import time
-# import math
 import socket
 import signal
 import threading
@@ -24,7 +23,9 @@ def init_signals(daemon):
     """Catch signals to stop daemon before exiting."""
 
     def signal_action(signum, frame):
-        """To be executed upon exit signal."""
+        """
+        To be executed upon exit signal.
+        """
         daemon.quit()
         sys.exit(0)
 
@@ -34,6 +35,9 @@ def init_signals(daemon):
 
 
 def make_ping_object(h, ping_id):
+    """
+    Returns initialized Ping thread
+    """
     timeout = min(500, 1000.0 / PING_FREQUENCY if PING_FREQUENCY else 500)
     max_sleep = int(1000.0 / PING_FREQUENCY)
     if not is_valid_ip4_address(h):
@@ -56,6 +60,9 @@ class PingThread(threading.Thread):
         self.counter = random.randint(900, 1800)
 
     def run(self):
+        """
+        Runs as long as the quit event is not set
+        """
         while not self.quit_event.is_set():
             if self.counter < 0:
                 self.host = make_ping_object(self.hostname, self.thread_id)
@@ -123,7 +130,7 @@ if __name__ == "__main__":
 
     if len(user) > 0:
         c = conf.Conf(user)
-        PING_FREQUENCY = 1000.0 / c.refreshInterval
+        PING_FREQUENCY = 1000.0 / c.refresh_interval
 
         daemon = PingIndicatorDaemon(c.servers, user)
         init_signals(daemon)

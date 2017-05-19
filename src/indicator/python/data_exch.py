@@ -12,6 +12,9 @@ class Data_Exch:
 
     # self.read()
     def read(self):
+        """
+        Reads the data exchange file and returns the data from it
+        """
         if os.path.exists(self.filename):
             t = int(time.time())
             delays = []
