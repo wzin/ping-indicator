@@ -121,7 +121,7 @@ class Ping(object):
         except socket.gaierror as e:
             self.print_unknown_host(e)
         # else:
-        #		self.print_start()
+        # self.print_start()
 
         self.seq_number = 0
         self.send_count = 0
@@ -147,7 +147,7 @@ class Ping(object):
 
         print("%d bytes from %s: icmp_seq=%d ttl=%d time=%.1f ms" % (
             packet_size, from_info, icmp_header["seq_number"], ip_header["ttl"], delay)
-              )
+        )
         # print("IP header: %r" % ip_header)
         # print("ICMP header: %r" % icmp_header)
 
@@ -185,7 +185,7 @@ class Ping(object):
     def setup_signal_handler(self):
         signal.signal(signal.SIGINT, self.signal_handler)  # Handle Ctrl-C
         if hasattr(signal, "SIGBREAK"):
-            # Handle Ctrl-Break e.g. under Windows 
+            # Handle Ctrl-Break e.g. under Windows
             signal.signal(signal.SIGBREAK, self.signal_handler)
 
     # --------------------------------------------------------------------------
@@ -212,7 +212,7 @@ class Ping(object):
             if deadline and self.total_time >= deadline:
                 break
 
-            if delay == None:
+            if delay is None:
                 delay = 0
 
             # Pause for the remainder of the MAX_SLEEP period (if applicable)
@@ -232,7 +232,7 @@ class Ping(object):
                 # Operation not permitted - Add more information to traceback
                 etype, evalue, etb = sys.exc_info()
                 evalue = etype(
-                        "%s - Note that ICMP messages can only be send from processes running as root." % evalue
+                    "%s - Note that ICMP messages can only be send from processes running as root." % evalue
                 )
                 raise etype, evalue, etb
             raise  # raise the original error
@@ -269,7 +269,7 @@ class Ping(object):
 
         # Make a dummy header with a 0 checksum.
         header = struct.pack(
-                "!BBHHH", ICMP_ECHO, 0, checksum, self.own_id, self.seq_number
+            "!BBHHH", ICMP_ECHO, 0, checksum, self.own_id, self.seq_number
         )
 
         padBytes = []
@@ -284,7 +284,7 @@ class Ping(object):
         # Now that we have the right checksum, we put that in. It's just easier
         # to make up a new header than to stuff it into the dummy.
         header = struct.pack(
-                "!BBHHH", ICMP_ECHO, 0, checksum, self.own_id, self.seq_number
+            "!BBHHH", ICMP_ECHO, 0, checksum, self.own_id, self.seq_number
         )
 
         packet = header + data
@@ -318,23 +318,23 @@ class Ping(object):
             packet_data, address = current_socket.recvfrom(ICMP_MAX_RECV)
 
             icmp_header = self.header2dict(
-                    names=[
-                        "type", "code", "checksum",
-                        "packet_id", "seq_number"
-                    ],
-                    struct_format="!BBHHH",
-                    data=packet_data[20:28]
+                names=[
+                    "type", "code", "checksum",
+                    "packet_id", "seq_number"
+                ],
+                struct_format="!BBHHH",
+                data=packet_data[20:28]
             )
 
             if icmp_header["packet_id"] == self.own_id:  # Our packet
                 ip_header = self.header2dict(
-                        names=[
-                            "version", "type", "length",
-                            "id", "flags", "ttl", "protocol",
-                            "checksum", "src_ip", "dest_ip"
-                        ],
-                        struct_format="!BBHHHBBHII",
-                        data=packet_data[:20]
+                    names=[
+                        "version", "type", "length",
+                        "id", "flags", "ttl", "protocol",
+                        "checksum", "src_ip", "dest_ip"
+                    ],
+                    struct_format="!BBHHHBBHII",
+                    data=packet_data[:20]
                 )
                 packet_size = len(packet_data) - 28
                 ip = socket.inet_ntoa(struct.pack("!I", ip_header["src_ip"]))

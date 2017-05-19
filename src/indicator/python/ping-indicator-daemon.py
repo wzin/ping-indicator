@@ -34,7 +34,7 @@ def init_signals(daemon):
 
 
 def make_ping_object(h, ping_id):
-    timeout = min(500, 1000.0/PING_FREQUENCY if PING_FREQUENCY else 500)
+    timeout = min(500, 1000.0 / PING_FREQUENCY if PING_FREQUENCY else 500)
     max_sleep = int(1000.0 / PING_FREQUENCY)
     if not is_valid_ip4_address(h):
         try:
